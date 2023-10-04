@@ -16,14 +16,24 @@
     <script>
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        var geojsonLayer = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson");
-        geojsonLayer.on('data:loaded', function () {
-            map.addLayer(geojsonLayer);
-            map.fitBounds(geojsonLayer.getBounds());
+        
+        // Load the first GeoJSON layer
+        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson");
+        geojsonLayer1.on('data:loaded', function () {
+            map.addLayer(geojsonLayer1);
+            map.fitBounds(geojsonLayer1.getBounds());
+        });
+
+        // Load the second GeoJSON layer
+        var geojsonLayer2 = L.geoJSON.ajax("ToJSO.geojson");
+        geojsonLayer2.on('data:loaded', function () {
+            map.addLayer(geojsonLayer2);
+            map.fitBounds(geojsonLayer2.getBounds());
         });
     </script>
 </body>
 </html>
+
 
 
 
