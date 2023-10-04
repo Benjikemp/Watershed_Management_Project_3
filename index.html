@@ -16,7 +16,7 @@
     <script>
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        var geojsonLayer = L.geoJSON.ajax("Watershed_Export.geojson");
+        var geojsonLayer = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson");
         geojsonLayer.on('data:loaded', function () {
             map.addLayer(geojsonLayer);
             map.fitBounds(geojsonLayer.getBounds());
@@ -24,5 +24,6 @@
     </script>
 </body>
 </html>
+
 
 
