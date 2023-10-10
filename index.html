@@ -35,26 +35,6 @@
             }
         }
 
-        // Load the third GeoJSON layer (ToJSO.geojson) with red dots
-        var geojsonLayer3 = L.geoJSON.ajax("ToJSO.geojson", {
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 5, // Set the radius of the red dots
-                    fillColor: 'red', // Set the fill color to red
-                    color: 'red', // Set the border color to red
-                    weight: 1, // Set the border weight
-                    opacity: 1, // Set the opacity
-                    fillOpacity: 1, // Set the fill opacity
-                });
-            },
-            onEachFeature: onEachFeature // Bind popup for feature attributes
-        });
-        geojsonLayer3.on('data:loaded', function () {
-            map.addLayer(geojsonLayer3);
-            map.fitBounds(geojsonLayer3.getBounds());
-            geojsonLayer3.bringToFront(); // Bring this layer to the front
-        });
-
         // Load the second GeoJSON layer with custom symbology based on "Mean_Darcy_velocity"
         var geojsonLayer2 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
             style: function (feature) {
@@ -101,7 +81,30 @@
             map.fitBounds(geojsonLayer1.getBounds());
         });
 
+        // Load the third GeoJSON layer (ToJSO.geojson) with red dots
+        var geojsonLayer3 = L.geoJSON.ajax("ToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5, // Set the radius of the red dots
+                    fillColor: 'red', // Set the fill color to red
+                    color: 'red', // Set the border color to red
+                    weight: 1, // Set the border weight
+                    opacity: 1, // Set the opacity
+                    fillOpacity: 1, // Set the fill opacity
+                });
+            },
+            onEachFeature: onEachFeature // Bind popup for feature attributes
+        });
+        geojsonLayer3.on('data:loaded', function () {
+            map.addLayer(geojsonLayer3);
+            map.fitBounds(geojsonLayer3.getBounds());
+        });
+
         // Load the raster layer (modify the URL accordingly)
         L.imageOverlay("path/to/your/raster.png", [
             [0, 0],
-            [0, 0], // Replace with
+            [0, 0], // Replace with the actual coordinates
+        ]).addTo(map);
+    </script>
+</body>
+</html>
