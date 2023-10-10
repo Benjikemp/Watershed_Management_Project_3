@@ -22,7 +22,7 @@
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-        // Function to bind popup with feature attributes
+        // Function to bind popup with feature attributes for "AverageSubsurf_FeaturesToJSO1.geojson" only
         function onEachFeature(feature, layer) {
             if (feature.properties) {
                 var popupContent = "<h3>Feature Attributes</h3>";
@@ -46,8 +46,7 @@
                     opacity: 1, // Set the opacity
                     fillOpacity: 1, // Set the fill opacity
                 });
-            },
-            onEachFeature: onEachFeature // Bind popup for feature attributes
+            }
         });
         geojsonLayer1.on('data:loaded', function () {
             map.addLayer(geojsonLayer1);
@@ -93,8 +92,7 @@
                     opacity: 1, // Set the opacity
                     fillOpacity: 1, // Set the fill opacity
                 });
-            },
-            onEachFeature: onEachFeature // Bind popup for feature attributes
+            }
         });
         geojsonLayer3.on('data:loaded', function () {
             map.addLayer(geojsonLayer3);
