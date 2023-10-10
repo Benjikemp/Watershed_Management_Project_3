@@ -17,15 +17,37 @@
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         
-        // Load the first GeoJSON layer
-        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson");
+        // Load the first GeoJSON layer with red dots for point features
+        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5, // Set the radius of the red dots
+                    fillColor: 'red', // Set the fill color to red
+                    color: 'red', // Set the border color to red
+                    weight: 1, // Set the border weight
+                    opacity: 1, // Set the opacity
+                    fillOpacity: 1, // Set the fill opacity
+                });
+            }
+        });
         geojsonLayer1.on('data:loaded', function () {
             map.addLayer(geojsonLayer1);
             map.fitBounds(geojsonLayer1.getBounds());
         });
 
-        // Load the second GeoJSON layer
-        var geojsonLayer2 = L.geoJSON.ajax("ToJSO.geojson");
+        // Load the second GeoJSON layer with red dots for point features
+        var geojsonLayer2 = L.geoJSON.ajax("ToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5, // Set the radius of the red dots
+                    fillColor: 'red', // Set the fill color to red
+                    color: 'red', // Set the border color to red
+                    weight: 1, // Set the border weight
+                    opacity: 1, // Set the opacity
+                    fillOpacity: 1, // Set the fill opacity
+                });
+            }
+        });
         geojsonLayer2.on('data:loaded', function () {
             map.addLayer(geojsonLayer2);
             map.fitBounds(geojsonLayer2.getBounds());
@@ -33,7 +55,3 @@
     </script>
 </body>
 </html>
-
-
-
-
