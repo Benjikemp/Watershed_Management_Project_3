@@ -79,6 +79,12 @@
             map.addLayer(geojsonLayer3);
             map.fitBounds(geojsonLayer3.getBounds());
         });
+
+        // Load the raster layer (modify the URL accordingly)
+        L.imageOverlay("path/to/your/raster.png", [
+            [0, 0],
+            [0, 0], // Replace with the actual coordinates
+        ]).addTo(map);
     </script>
 </body>
 </html>
