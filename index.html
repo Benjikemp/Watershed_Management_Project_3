@@ -51,6 +51,7 @@
         geojsonLayer1.on('data:loaded', function () {
             map.addLayer(geojsonLayer1);
             map.fitBounds(geojsonLayer1.getBounds());
+            geojsonLayer1.bringToFront(); // Bring this layer to the front
         });
 
         // Load the second GeoJSON layer with custom symbology based on "Mean_Darcy_velocity"
@@ -79,6 +80,7 @@
         geojsonLayer2.on('data:loaded', function () {
             map.addLayer(geojsonLayer2);
             map.fitBounds(geojsonLayer2.getBounds());
+            geojsonLayer2.bringToFront(); // Bring this layer to the front
         });
 
         // Load the third GeoJSON layer (ToJSO.geojson) with red dots
@@ -97,13 +99,8 @@
         geojsonLayer3.on('data:loaded', function () {
             map.addLayer(geojsonLayer3);
             map.fitBounds(geojsonLayer3.getBounds());
+            geojsonLayer3.bringToFront(); // Bring this layer to the front
         });
 
         // Load the raster layer (modify the URL accordingly)
         L.imageOverlay("path/to/your/raster.png", [
-            [0, 0],
-            [0, 0], // Replace with the actual coordinates
-        ]).addTo(map);
-    </script>
-</body>
-</html>
