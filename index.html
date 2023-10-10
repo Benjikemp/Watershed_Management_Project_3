@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My GeoJSON Map</title>
+    <title>The Land Between Recharge Zones</title>
     <style>
         #map {
             height: 400px;
+            margin: 0 auto; /* Center the map horizontally */
+        }
+        body {
+            text-align: center; /* Center align the title */
         }
     </style>
 </head>
 <body>
+    <h1>The Land Between Recharge Zones</h1>
     <div id="map"></div>
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
@@ -16,6 +21,19 @@
     <script>
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Function to bind popup with feature attributes
+        function onEachFeature(feature, layer) {
+            if (feature.properties) {
+                var popupContent = "<h3>Feature Attributes</h3>";
+                for (var property in feature.properties) {
+                    if (feature.properties.hasOwnProperty(property)) {
+                        popupContent += "<strong>" + property + ":</strong> " + feature.properties[property] + "<br>";
+                    }
+                }
+                layer.bindPopup(popupContent);
+            }
+        }
 
         // Load the first GeoJSON layer with red dots for point features
         var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
@@ -28,7 +46,8 @@
                     opacity: 1, // Set the opacity
                     fillOpacity: 1, // Set the fill opacity
                 });
-            }
+            },
+            onEachFeature: onEachFeature // Bind popup for feature attributes
         });
         geojsonLayer1.on('data:loaded', function () {
             map.addLayer(geojsonLayer1);
@@ -55,7 +74,8 @@
                     opacity: 1,
                     fillOpacity: 0.7
                 };
-            }
+            },
+            onEachFeature: onEachFeature // Bind popup for feature attributes
         });
         geojsonLayer2.on('data:loaded', function () {
             map.addLayer(geojsonLayer2);
@@ -73,7 +93,8 @@
                     opacity: 1, // Set the opacity
                     fillOpacity: 1, // Set the fill opacity
                 });
-            }
+            },
+            onEachFeature: onEachFeature // Bind popup for feature attributes
         });
         geojsonLayer3.on('data:loaded', function () {
             map.addLayer(geojsonLayer3);
