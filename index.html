@@ -22,15 +22,67 @@
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
+        // Function to bind popup with feature attributes for "AverageSubsurf_FeaturesToJSO1.geojson" only
+        function onEachFeature(feature, layer) {
+            if (feature.properties) {
+                var popupContent = "<h3>Feature Attributes</h3>";
+                for (var property in feature.properties) {
+                    if (feature.properties.hasOwnProperty(property)) {
+                        popupContent += "<strong>" + property + ":</strong> " + feature.properties[property] + "<br>";
+                    }
+                }
+                layer.bindPopup(popupContent);
+            }
+        }
+
         // Load the GeoJSON layers without specifying styles here
-        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson");
-        geojsonLayer1.addTo(map);
+        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5, // Set the radius of the red dots
+                    fillColor: 'red', // Set the fill color to red
+                    color: 'red', // Set the border color to red
+                    weight: 1, // Set the border weight
+                    opacity: 1, // Set the opacity
+                    fillOpacity: 1, // Set the fill opacity
+                });
+            },
+        }).addTo(map);
 
-        var geojsonLayer2 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson");
-        geojsonLayer2.addTo(map);
+        var geojsonLayer2 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+            style: function (feature) {
+                var velocity = feature.properties.Mean_Darcy_velocity;
+                var color;
+                if (velocity < 5) {
+                    color = 'green';
+                } else if (velocity < 10) {
+                    color = 'yellow';
+                } else {
+                    color = 'red';
+                }
+                return {
+                    fillColor: color,
+                    color: 'black',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7,
+                };
+            },
+            onEachFeature: onEachFeature, // Bind popup for feature attributes
+        }).addTo(map);
 
-        var geojsonLayer3 = L.geoJSON.ajax("ToJSO.geojson");
-        geojsonLayer3.addTo(map);
+        var geojsonLayer3 = L.geoJSON.ajax("ToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5, // Set the radius of the red dots
+                    fillColor: 'red', // Set the fill color to red
+                    color: 'red', // Set the border color to red
+                    weight: 1, // Set the border weight
+                    opacity: 1, // Set the opacity
+                    fillOpacity: 1, // Set the fill opacity
+                },
+            );
+        }).addTo(map);
     </script>
 </body>
 </html>
