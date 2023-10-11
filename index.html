@@ -28,6 +28,10 @@
         <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO2
         <br>
         <i style="background: green;"></i> Recharge_Zones_ToJSO
+        <br>
+        <i style="background: orange;"></i> StreamGrid
+        <br>
+        <i style="background: yellow;"></i> StreamGridSE
     </div>
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
@@ -101,10 +105,15 @@
             }
         }).addTo(map);
 
-        // Load the raster layer (modify the URL and bounds accordingly)
+        // Load the raster layers (modify the URLs and bounds accordingly)
         L.imageOverlay("StreamGrid.tif", [
             [minLat, minLon],
             [maxLat, maxLon]
+        ]).addTo(map);
+
+        L.imageOverlay("StreamGridSE.tif", [
+            [minLatSE, minLonSE],
+            [maxLatSE, maxLonSE]
         ]).addTo(map);
 
         // Create a layer control to allow users to turn layers on/off
@@ -116,10 +125,12 @@
             "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
             "Recharge_Zones_ToJSO": geojsonLayer1,
             "ToJSO": geojsonLayer3,
-            "StreamGrid": rasterLayer // Define this layer variable
+            "StreamGrid": rasterLayer, // Define this layer variable
+            "StreamGridSE": rasterLayerSE // Define this layer variable
         };
 
         L.control.layers(baseLayers, overlays).addTo(map);
     </script>
 </body>
 </html>
+
