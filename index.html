@@ -101,28 +101,11 @@
             }
         }).addTo(map);
 
-        // Load the fourth GeoJSON layer with custom symbology based on "Mean_Darcy_velocity"
-        var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-            style: function (feature) {
-                var velocity = feature.properties.Mean_Darcy_velocity;
-                var color;
-                if (velocity < 5) {
-                    color = 'blue';
-                } else if (velocity < 10) {
-                    color = 'yellow';
-                } else {
-                    color = 'red';
-                }
-                return {
-                    fillColor: color,
-                    color: 'black',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7
-                };
-            },
-            onEachFeature: onEachFeature // Bind popup for feature attributes
-        }).addTo(map);
+        // Load the raster layer (modify the URL and bounds accordingly)
+        L.imageOverlay("StreamGrid.tif", [
+            [minLat, minLon],
+            [maxLat, maxLon]
+        ]).addTo(map);
 
         // Create a layer control to allow users to turn layers on/off
         var baseLayers = {
@@ -131,9 +114,9 @@
 
         var overlays = {
             "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
-            "AverageSubsurf_FeaturesToJSO2": geojsonLayer4,
             "Recharge_Zones_ToJSO": geojsonLayer1,
-            "ToJSO": geojsonLayer3
+            "ToJSO": geojsonLayer3,
+            "StreamGrid": rasterLayer // Define this layer variable
         };
 
         L.control.layers(baseLayers, overlays).addTo(map);
