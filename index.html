@@ -25,6 +25,8 @@
         <h4>Legend</h4>
         <i style="background: red;"></i> AverageSubsurf_FeaturesToJSO1
         <br>
+        <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO2
+        <br>
         <i style="background: green;"></i> Recharge_Zones_ToJSO
     </div>
     <script src="leaflet/leaflet.js"></script>
@@ -99,6 +101,29 @@
             }
         }).addTo(map);
 
+        // Load the fourth GeoJSON layer with custom symbology based on "Mean_Darcy_velocity"
+        var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+            style: function (feature) {
+                var velocity = feature.properties.Mean_Darcy_velocity;
+                var color;
+                if (velocity < 5) {
+                    color = 'blue';
+                } else if (velocity < 10) {
+                    color = 'yellow';
+                } else {
+                    color = 'red';
+                }
+                return {
+                    fillColor: color,
+                    color: 'black',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7
+                };
+            },
+            onEachFeature: onEachFeature // Bind popup for feature attributes
+        }).addTo(map);
+
         // Create a layer control to allow users to turn layers on/off
         var baseLayers = {
             "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
@@ -106,6 +131,7 @@
 
         var overlays = {
             "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
+            "AverageSubsurf_FeaturesToJSO2": geojsonLayer4,
             "Recharge_Zones_ToJSO": geojsonLayer1,
             "ToJSO": geojsonLayer3
         };
