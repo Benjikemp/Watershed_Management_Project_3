@@ -10,11 +10,23 @@
         body {
             text-align: center; /* Center align the title */
         }
+        .legend {
+            background: white;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <h1>The Land Between Recharge Zones</h1>
     <div id="map"></div>
+    <div class="legend">
+        <h4>Legend</h4>
+        <i style="background: red;"></i> AverageSubsurf_FeaturesToJSO1
+        <br>
+        <i style="background: green;"></i> Recharge_Zones_ToJSO
+    </div>
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
@@ -48,11 +60,7 @@
                 });
             },
             onEachFeature: onEachFeature // Bind popup for feature attributes
-        });
-        geojsonLayer3.on('data:loaded', function () {
-            map.addLayer(geojsonLayer3);
-            map.fitBounds(geojsonLayer3.getBounds());
-        });
+        }).addTo(map);
 
         // Load the second GeoJSON layer with custom symbology based on "Mean_Darcy_velocity"
         var geojsonLayer2 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
@@ -66,7 +74,6 @@
                 } else {
                     color = 'red';
                 }
-
                 return {
                     fillColor: color,
                     color: 'black',
@@ -76,11 +83,7 @@
                 };
             },
             onEachFeature: onEachFeature // Bind popup for feature attributes
-        });
-        geojsonLayer2.on('data:loaded', function () {
-            map.addLayer(geojsonLayer2);
-            map.fitBounds(geojsonLayer2.getBounds());
-        });
+        }).addTo(map);
 
         // Load the first GeoJSON layer with red outline for point features (no fill)
         var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
@@ -94,11 +97,20 @@
                     fillOpacity: 0, // No fill
                 });
             }
-        });
-        geojsonLayer1.on('data:loaded', function () {
-            map.addLayer(geojsonLayer1);
-            map.fitBounds(geojsonLayer1.getBounds());
-        });
+        }).addTo(map);
+
+        // Create a layer control to allow users to turn layers on/off
+        var baseLayers = {
+            "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        };
+
+        var overlays = {
+            "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
+            "Recharge_Zones_ToJSO": geojsonLayer1,
+            "ToJSO": geojsonLayer3
+        };
+
+        L.control.layers(baseLayers, overlays).addTo(map);
     </script>
 </body>
 </html>
