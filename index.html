@@ -105,15 +105,15 @@
             }
         }).addTo(map);
 
-        // Load the raster layers (modify the URLs and bounds accordingly)
+        // Load the raster layers with the corrected bounds
         L.imageOverlay("StreamGrid.tif", [
-            [minLat, minLon],
-            [maxLat, maxLon]
+            [11652000, 1296090],
+            [12195600, 1631280]
         ]).addTo(map);
 
         L.imageOverlay("StreamGridSE.tif", [
-            [minLatSE, minLonSE],
-            [maxLatSE, maxLonSE]
+            [11652000, 1296090],
+            [12195600, 1631280]
         ]).addTo(map);
 
         // Create a layer control to allow users to turn layers on/off
@@ -133,4 +133,3 @@
     </script>
 </body>
 </html>
-
