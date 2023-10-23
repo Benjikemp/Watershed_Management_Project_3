@@ -66,7 +66,7 @@
                 });
             },
             onEachFeature: onEachFeature // Bind popup for feature attributes
-        }).addTo(map);
+        });
 
         // Load the second GeoJSON layer with custom symbology based on "Mean_Darcy_velocity"
         var geojsonLayer2 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
@@ -89,7 +89,7 @@
                 };
             },
             onEachFeature: onEachFeature // Bind popup for feature attributes
-        }).addTo(map);
+        });
 
         // Load the first GeoJSON layer with red outline for point features (no fill)
         var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
@@ -103,33 +103,42 @@
                     fillOpacity: 0, // No fill
                 });
             }
-        }).addTo(map);
+        });
 
-        // Load the raster layers with the corrected bounds
-        L.imageOverlay("StreamGrid.tif", [
-            [11652000, 1296090],
-            [12195600, 1631280]
-        ]).addTo(map);
+        // Load the raster layers (modify the URLs and bounds accordingly)
+        var rasterLayer = L.imageOverlay("StreamGrid.tif", [
+            [11965200, 1296090],
+            [12167610, 1631280]
+        ]);
 
-        L.imageOverlay("StreamGridSE.tif", [
-            [11652000, 1296090],
-            [12195600, 1631280]
-        ]).addTo(map);
+        var rasterLayerSE = L.imageOverlay("StreamGridSE.tif", [
+            [11965200, 1296090],
+            [12167610, 1631280]
+        ]);
 
-        // Create a layer control to allow users to turn layers on/off
-        var baseLayers = {
+        // Add all layers to the map
+        geojsonLayer3.addTo(map);
+        geojsonLayer2.addTo(map);
+        geojsonLayer1.addTo(map);
+        rasterLayer.addTo(map);
+        rasterLayerSE.addTo(map);
+
+        // Define base layers and overlay layers for layer control
+        var baseMaps = {
             "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         };
 
-        var overlays = {
+        var overlayMaps = {
             "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
+            "AverageSubsurf_FeaturesToJSO2": geojsonLayer3,
             "Recharge_Zones_ToJSO": geojsonLayer1,
-            "ToJSO": geojsonLayer3,
-            "StreamGrid": rasterLayer, // Define this layer variable
-            "StreamGridSE": rasterLayerSE // Define this layer variable
+            "StreamGrid": rasterLayer,
+            "StreamGridSE": rasterLayerSE
         };
 
-        L.control.layers(baseLayers, overlays).addTo(map);
+        // Create a layer control and add it to the map
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
     </script>
 </body>
 </html>
+
