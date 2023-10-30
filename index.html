@@ -29,7 +29,7 @@
         <br>
         <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO1
         <br>
-        <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO2
+        <i style="background: green;"></i> AverageSubsurf_FeaturesToJSO2
         <br>
         <i style="background: orange;"></i> StreamGrid
         <br>
@@ -73,10 +73,12 @@
         // Load the second GeoJSON layer (ToJSO.geojson)
         var geojsonLayer2 = L.geoJSON.ajax("ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
+                var velocity = feature.properties.Mean_Darcy_velocity;
+                var color = L.interpolateHcl([0, 100, 50], [120, 100, 50])(velocity / 20); // Adjust the velocity range as needed
                 return L.circleMarker(latlng, {
                     radius: 5,
-                    fillColor: 'darkblack',
-                    color: 'darkblack',
+                    fillColor: color,
+                    color: color,
                     weight: 1,
                     opacity: 1,
                     fillOpacity: 1,
@@ -87,46 +89,17 @@
 
         // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson)
         var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-            style: function (feature) {
+            pointToLayer: function (feature, latlng) {
                 var velocity = feature.properties.Mean_Darcy_velocity;
-                var color;
-                if (velocity < 5) {
-                    color = 'green';
-                } else if (velocity < 10) {
-                    color = 'yellow';
-                } else {
-                    color = 'red';
-                }
-                return {
+                var color = L.interpolateHcl([0, 100, 50], [120, 100, 50])(velocity / 20); // Adjust the velocity range as needed
+                return L.circleMarker(latlng, {
+                    radius: 5,
                     fillColor: color,
-                    color: 'black',
+                    color: color,
                     weight: 1,
                     opacity: 1,
-                    fillOpacity: 0.7,
-                };
-            },
-            onEachFeature: onEachFeature
-        });
-
-        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson)
-        var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-            style: function (feature) {
-                var velocity = feature.properties.Mean_Darcy_velocity;
-                var color;
-                if (velocity < 5) {
-                    color = 'green';
-                } else if (velocity < 10) {
-                    color = 'yellow';
-                } else {
-                    color = 'blue';
-                }
-                return {
-                    fillColor: color,
-                    color: 'black',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                };
+                    fillOpacity: 1,
+                });
             },
             onEachFeature: onEachFeature
         });
@@ -143,7 +116,7 @@
         var overlayMaps = {
             "Recharge_Zones_ToJSO": geojsonLayer1,
             "ToJSO": geojsonLayer2,
-            "AverageSubsurf_FeaturesToJSO1": geojsonLayer4,
+            "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
             "AverageSubsurf_FeaturesToJSO2": geojsonLayer3,
             "StreamGrid": rasterLayer,
             "StreamGridSE": rasterLayerSE
@@ -153,3 +126,4 @@
     </script>
 </body>
 </html>
+
