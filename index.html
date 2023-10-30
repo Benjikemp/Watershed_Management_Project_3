@@ -29,6 +29,8 @@
         <br>
         <i style="background: green;"></i> Recharge_Zones_ToJSO
         <br>
+        <i style="background: darkblack;"></i> ToJSO
+        <br>
         <i style="background: orange;"></i> StreamGrid
         <br>
         <i style="background: yellow;"></i> StreamGridSE
@@ -53,13 +55,13 @@
             }
         }
 
-        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson) with red dots
-        var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+        // Load the fourth GeoJSON layer (ToJSO.geojson) with dark black dots
+        var geojsonLayer4 = L.geoJSON.ajax("ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
                 return L.circleMarker(latlng, {
-                    radius: 5, // Set the radius of the red dots
-                    fillColor: 'red', // Set the fill color to red
-                    color: 'red', // Set the border color to red
+                    radius: 5, // Set the radius of the dark black dots
+                    fillColor: 'darkblack', // Set the fill color to dark black
+                    color: 'darkblack', // Set the border color to dark black
                     weight: 1, // Set the border weight
                     opacity: 1, // Set the opacity
                     fillOpacity: 1, // Set the fill opacity
@@ -106,8 +108,8 @@
         });
 
         // Load the raster layers (modify the URLs and bounds accordingly)
-        var rasterLayer = L.imageOverlay("StreamGrid.tif", [[11965200, 1296090], [12167610, 1631280]]).addTo(map);
-        var rasterLayerSE = L.imageOverlay("StreamGridSE.tif", [[11965200, 1296090], [12167610, 1631280]]).addTo(map);
+        var rasterLayer = L.imageOverlay("StreamGrid.tif", [[11965200, 1296090], [12167610, 1631280]]);
+        var rasterLayerSE = L.imageOverlay("StreamGridSE.tif", [[11965200, 1296090], [12167610, 1631280]]);
 
         // Create a layer control
         var baseMaps = {
@@ -118,6 +120,7 @@
             "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
             "AverageSubsurf_FeaturesToJSO2": geojsonLayer3,
             "Recharge_Zones_ToJSO": geojsonLayer1,
+            "ToJSO": geojsonLayer4,
             "StreamGrid": rasterLayer,
             "StreamGridSE": rasterLayerSE
         };
