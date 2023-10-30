@@ -1,5 +1,4 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>The Land Between Recharge Zones</title>
@@ -24,13 +23,13 @@
     <div id="map"></div>
     <div class="legend">
         <h4>Legend</h4>
-        <i style="background: red;"></i> AverageSubsurf_FeaturesToJSO1
+        <i style="background: red;"></i> Recharge_Zones_ToJSO
+        <br>
+        <i style="background: darkblack;"></i> ToJSO
         <br>
         <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO2
         <br>
-        <i style="background: green;"></i> Recharge_Zones_ToJSO
-        <br>
-        <i style="background: darkblack;"></i> ToJSO
+        <i style="background: green;"></i> AverageSubsurf_FeaturesToJSO1
         <br>
         <i style="background: orange;"></i> StreamGrid
         <br>
@@ -43,7 +42,7 @@
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-        // Function to bind popup with feature attributes for "AverageSubsurf_FeaturesToJSO1.geojson" only
+        // Function to bind popup with feature attributes for "AverageSubsurf_FeaturesToJSO2.geojson" only
         function onEachFeature(feature, layer) {
             if (feature.properties) {
                 var popupContent = "<h3>Feature Attributes</h3>";
@@ -56,23 +55,38 @@
             }
         }
 
-        // Load the fourth GeoJSON layer (ToJSO.geojson) with dark black dots
-        var geojsonLayer4 = L.geoJSON.ajax("ToJSO.geojson", {
+        // Load the first GeoJSON layer (Recharge_Zones_ToJSO.geojson)
+        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
                 return L.circleMarker(latlng, {
-                    radius: 5, // Set the radius of the dark black dots
-                    fillColor: 'darkblack', // Set the fill color to dark black
-                    color: 'darkblack', // Set the border color to dark black
-                    weight: 1, // Set the border weight
-                    opacity: 1, // Set the opacity
-                    fillOpacity: 1, // Set the fill opacity
+                    radius: 5,
+                    fillColor: 'red',
+                    color: 'red',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0,
                 });
             },
-            onEachFeature: onEachFeature // Bind popup for feature attributes
+            onEachFeature: onEachFeature
         });
 
-        // Load the second GeoJSON layer with custom symbology based on "Mean_Darcy_velocity"
-        var geojsonLayer2 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+        // Load the second GeoJSON layer (ToJSO.geojson)
+        var geojsonLayer2 = L.geoJSON.ajax("ToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5,
+                    fillColor: 'darkblack',
+                    color: 'darkblack',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 1,
+                });
+            },
+            onEachFeature: onEachFeature
+        });
+
+        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson)
+        var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
             style: function (feature) {
                 var velocity = feature.properties.Mean_Darcy_velocity;
                 var color;
@@ -88,27 +102,13 @@
                     color: 'black',
                     weight: 1,
                     opacity: 1,
-                    fillOpacity: 0.7
+                    fillOpacity: 0.7,
                 };
             },
-            onEachFeature: onEachFeature // Bind popup for feature attributes
+            onEachFeature: onEachFeature
         });
 
-        // Load the first GeoJSON layer with red outline for point features (no fill)
-        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 5, // Set the radius of the red dots
-                    fillColor: 'red', // Set the fill color to red
-                    color: 'red', // Set the border color to red
-                    weight: 1, // Set the border weight
-                    opacity: 1, // Set the opacity
-                    fillOpacity: 0, // No fill
-                });
-            }
-        });
-
-        // Load the raster layers (modify the URLs and bounds accordingly)
+        // Load the raster layers
         var rasterLayer = L.imageOverlay("StreamGrid.tif", [[11965200, 1296090], [12167610, 1631280]]);
         var rasterLayerSE = L.imageOverlay("StreamGridSE.tif", [[11965200, 1296090], [12167610, 1631280]]);
 
@@ -118,10 +118,9 @@
         };
 
         var overlayMaps = {
-            "AverageSubsurf_FeaturesToJSO1": geojsonLayer2,
-            "AverageSubsurf_FeaturesToJSO2": geojsonLayer3,
             "Recharge_Zones_ToJSO": geojsonLayer1,
-            "ToJSO": geojsonLayer4,
+            "ToJSO": geojsonLayer2,
+            "AverageSubsurf_FeaturesToJSO2": geojsonLayer3,
             "StreamGrid": rasterLayer,
             "StreamGridSE": rasterLayerSE
         };
