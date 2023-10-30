@@ -53,8 +53,8 @@
             }
         }
 
-        // Load the third GeoJSON layer (ToJSO.geojson) with red dots
-        var geojsonLayer3 = L.geoJSON.ajax("ToJSO.geojson", {
+        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson) with red dots
+        var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
             pointToLayer: function (feature, latlng) {
                 return L.circleMarker(latlng, {
                     radius: 5, // Set the radius of the red dots
@@ -126,3 +126,6 @@
     </script>
 </body>
 </html>
+
+
+ 
