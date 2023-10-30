@@ -29,7 +29,7 @@
         <br>
         <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO1
         <br>
-        <i style="background: green;"></i> AverageSubsurf_FeaturesToJSO2
+        <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO2
         <br>
         <i style="background: orange;"></i> StreamGrid
         <br>
@@ -40,7 +40,7 @@
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
     <script>
         var map = L.map('map').setView([0, 0], 10);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo map();
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
         // Function to bind popup with feature attributes
         function onEachFeature(feature, layer) {
@@ -85,8 +85,8 @@
             onEachFeature: onEachFeature
         });
 
-        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson)
-        var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson)
+        var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
             style: function (feature) {
                 var velocity = feature.properties.Mean_Darcy_velocity;
                 var color;
@@ -108,8 +108,8 @@
             onEachFeature: onEachFeature
         });
 
-        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson)
-        var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson)
+        var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
             style: function (feature) {
                 var velocity = feature.properties.Mean_Darcy_velocity;
                 var color;
@@ -118,7 +118,7 @@
                 } else if (velocity < 10) {
                     color = 'yellow';
                 } else {
-                    color = 'red';
+                    color = 'blue';
                 }
                 return {
                     fillColor: color,
@@ -143,8 +143,8 @@
         var overlayMaps = {
             "Recharge_Zones_ToJSO": geojsonLayer1,
             "ToJSO": geojsonLayer2,
-            "AverageSubsurf_FeaturesToJSO1": geojsonLayer3,
-            "AverageSubsurf_FeaturesToJSO2": geojsonLayer4,
+            "AverageSubsurf_FeaturesToJSO1": geojsonLayer4,
+            "AverageSubsurf_FeaturesToJSO2": geojsonLayer3,
             "StreamGrid": rasterLayer,
             "StreamGridSE": rasterLayerSE
         };
@@ -153,4 +153,3 @@
     </script>
 </body>
 </html>
-
