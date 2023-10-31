@@ -10,31 +10,11 @@
         body {
             text-align: center; /* Center align the title */
         }
-        .legend {
-            background: white;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
     <h1>The Land Between Recharge Zones</h1>
     <div id="map"></div>
-    <div class="legend">
-        <h4>Legend</h4>
-        <i style="background: red;"></i> Recharge_Zones_ToJSO
-        <br>
-        <i style="background: darkblack;"></i> ToJSO
-        <br>
-        <i style="background: blue;"></i> AverageSubsurf_FeaturesToJSO1
-        <br>
-        <i style="background: green;"></i> AverageSubsurf_FeaturesToJSO2
-        <br>
-        <i style="background: orange;"></i> StreamGrid
-        <br>
-        <i style="background: yellow;"></i> StreamGridSE
-    </div>
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
@@ -86,24 +66,28 @@
             onEachFeature: onEachFeature
         });
 
-        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson) with a simple style
+        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson) with a blue style
         var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-            style: {
-                color: 'blue',
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.7
+            style: function (feature) {
+                return {
+                    color: 'blue',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7
+                };
             },
             onEachFeature: onEachFeature
         });
 
-        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson) with a simple style
+        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson) with a blue style
         var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-            style: {
-                color: 'green',
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.7
+            style: function (feature) {
+                return {
+                    color: 'blue',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7
+                };
             },
             onEachFeature: onEachFeature
         });
