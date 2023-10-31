@@ -54,39 +54,45 @@
         var geojsonLayer2 = L.geoJSON.ajax("ToJSO.geojson", {
             style: function (feature) {
                 var velocity = feature.properties.Mean_Darcy_velocity;
-                var color = L.interpolateHcl([0, 100, 50], [120, 100, 50])(velocity / 20); // Adjust the velocity range as needed
+                var color = L.Util.interpolate("#0000FF", "#FF0000", velocity / 20); // Adjust the velocity range as needed
                 return {
                     fillColor: color,
                     color: color,
                     weight: 1,
                     opacity: 1,
-                    fillOpacity: 1,
+                    fillOpacity: 0.7,
                 };
             },
             onEachFeature: onEachFeature
         });
 
-        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson) with a blue style
+        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson) with gradient symbology
         var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
             style: function (feature) {
+                var velocity = feature.properties.Mean_Darcy_velocity;
+                var color = L.Util.interpolate("#0000FF", "#FF0000", velocity / 20); // Adjust the velocity range as needed
                 return {
-                    color: 'blue',
+                    fillColor: color,
+                    color: color,
                     weight: 1,
                     opacity: 1,
-                    fillOpacity: 0.7
+                    fillOpacity: 0.7,
                 };
             },
             onEachFeature: onEachFeature
         });
 
-        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson) with a blue style
+        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson) with gradient symbology
         var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
             style: function (feature) {
+                var velocity = feature.properties.Mean_Darcy_velocity;
+                var color = L.Util.interpolate("#0000FF", "#FF0000", velocity / 20); // Adjust the velocity range as needed
                 return {
-                    color: 'blue',
+                    fillColor: color,
+                    color: color,
                     weight: 1,
                     opacity: 1,
-                    fillOpacity: 0.7
+                    fillOpacity: 0.7,
                 };
             },
             onEachFeature: onEachFeature
@@ -114,5 +120,3 @@
     </script>
 </body>
 </html>
-
-
