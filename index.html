@@ -13,7 +13,6 @@
     </style>
 </head>
 <body>
-    <h1>The Land Between Recharge Zones</h1>
     <div id="map"></div>
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
@@ -22,7 +21,26 @@
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-        // Function to bind popup with feature attributes
+        function style(feature) {
+            var velocity = feature.properties.Mean_Darcy_velocity;
+            var color = getColor(velocity);
+            return {
+                fillColor: color,
+                color: color,
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.7,
+            };
+        }
+
+        function getColor(velocity) {
+            // Adjust this range as needed
+            var low = 0;
+            var high = 20;
+            var colorScale = ['#ff0000', '#00ff00']; // Red to Green gradient
+            return L.Util.interpolateColors(colorScale, low, high, velocity);
+        }
+
         function onEachFeature(feature, layer) {
             if (feature.properties) {
                 var popupContent = "<h3>Feature Attributes</h3>";
@@ -35,7 +53,6 @@
             }
         }
 
-        // Load the first GeoJSON layer (Recharge_Zones_ToJSO.geojson)
         var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
                 return L.circleMarker(latlng, {
@@ -44,79 +61,28 @@
                     color: 'red',
                     weight: 1,
                     opacity: 1,
-                    fillOpacity: 0,
+                    fillOpacity: 0.7,
                 });
             },
-            onEachFeature: onEachFeature
-        });
+            onEachFeature: onEachFeature,
+        }).addTo(map);
 
-        // Load the second GeoJSON layer (ToJSO.geojson) with gradient symbology
-        var geojsonLayer2 = L.geoJSON.ajax("ToJSO.geojson", {
-            style: function (feature) {
-                var velocity = feature.properties.Mean_Darcy_velocity;
-                var color = L.Util.interpolate("#0000FF", "#FF0000", velocity / 20); // Adjust the velocity range as needed
-                return {
-                    fillColor: color,
-                    color: color,
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                };
+        L.geoJSON.ajax("ToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, style(feature));
             },
-            onEachFeature: onEachFeature
-        });
+            onEachFeature: onEachFeature,
+        }).addTo(map);
 
-        // Load the third GeoJSON layer (AverageSubsurf_FeaturesToJSO2.geojson) with gradient symbology
-        var geojsonLayer3 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-            style: function (feature) {
-                var velocity = feature.properties.Mean_Darcy_velocity;
-                var color = L.Util.interpolate("#0000FF", "#FF0000", velocity / 20); // Adjust the velocity range as needed
-                return {
-                    fillColor: color,
-                    color: color,
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                };
-            },
-            onEachFeature: onEachFeature
-        });
+        L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+            style: style,
+            onEachFeature: onEachFeature,
+        }).addTo(map);
 
-        // Load the fourth GeoJSON layer (AverageSubsurf_FeaturesToJSO1.geojson) with gradient symbology
-        var geojsonLayer4 = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-            style: function (feature) {
-                var velocity = feature.properties.Mean_Darcy_velocity;
-                var color = L.Util.interpolate("#0000FF", "#FF0000", velocity / 20); // Adjust the velocity range as needed
-                return {
-                    fillColor: color,
-                    color: color,
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                };
-            },
-            onEachFeature: onEachFeature
-        });
-
-        // Load the raster layers
-        var rasterLayer = L.imageOverlay("StreamGrid.tif", [[11965200, 1296090], [12167610, 1631280]]);
-        var rasterLayerSE = L.imageOverlay("StreamGridSE.tif", [[11965200, 1296090], [12167610, 1631280]]);
-
-        // Create a layer control
-        var baseMaps = {
-            "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-        };
-
-        var overlayMaps = {
-            "Recharge_Zones_ToJSO": geojsonLayer1,
-            "ToJSO": geojsonLayer2,
-            "AverageSubsurf_FeaturesToJSO2": geojsonLayer3,
-            "AverageSubsurf_FeaturesToJSO1": geojsonLayer4,
-            "StreamGrid": rasterLayer,
-            "StreamGridSE": rasterLayerSE
-        };
-
-        L.control.layers(baseMaps, overlayMaps).addTo(map);
+        L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+            style: style,
+            onEachFeature: onEachFeature,
+        }).addTo(map);
     </script>
 </body>
 </html>
