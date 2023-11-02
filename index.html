@@ -83,6 +83,31 @@
             style: style,
             onEachFeature: onEachFeature,
         }).addTo(map);
+
+        L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+            style: {
+                fillColor: 'yellow',
+                color: 'yellow',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.7,
+            },
+            onEachFeature: onEachFeature,
+        }).addTo(map);
+
+        L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5,
+                    fillColor: 'red',
+                    color: 'red',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7,
+                });
+            },
+            onEachFeature: onEachFeature,
+        }).addTo(map);
     </script>
 </body>
 </html>
