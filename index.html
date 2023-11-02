@@ -21,6 +21,17 @@
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
+        // Function to style the yellow polygon with a darker fill color
+        function styleYellowPolygon(feature) {
+            return {
+                fillColor: 'darkyellow',
+                color: 'yellow',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.7,
+            };
+        }
+
         function style(feature) {
             var velocity = feature.properties.Mean_Darcy_velocity;
             var color = getColor(velocity);
@@ -53,61 +64,59 @@
             }
         }
 
-        var geojsonLayer1 = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 5,
-                    fillColor: 'red',
-                    color: 'red',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                });
-            },
-            onEachFeature: onEachFeature,
-        }).addTo(map);
+        var baseMaps = {
+            "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        };
 
-        L.geoJSON.ajax("ToJSO.geojson", {
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, style(feature));
-            },
-            onEachFeature: onEachFeature,
-        }).addTo(map);
+        var overlayMaps = {
+            "Recharge Zones (Red)": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        radius: 5,
+                        fillColor: 'red',
+                        color: 'red',
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.7,
+                    });
+                },
+                onEachFeature: onEachFeature,
+            }),
+            "ToJSO (Proportional Symbology)": L.geoJSON.ajax("ToJSO.geojson", {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, style(feature));
+                },
+                onEachFeature: onEachFeature,
+            }),
+            "AverageSubsurf_FeaturesToJSO1 (Proportional Symbology)": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+                style: style,
+                onEachFeature: onEachFeature,
+            }),
+            "AverageSubsurf_FeaturesToJSO2 (Proportional Symbology)": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+                style: style,
+                onEachFeature: onEachFeature,
+            }),
+            "Discharge Zones (Yellow)": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+                style: styleYellowPolygon, // Use the style for the yellow polygon
+                onEachFeature: onEachFeature,
+            }),
+            "Watershed4Pour (Red)": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        radius: 5,
+                        fillColor: 'red',
+                        color: 'red',
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.7,
+                    });
+                },
+                onEachFeature: onEachFeature,
+            }),
+        };
 
-        L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-            style: style,
-            onEachFeature: onEachFeature,
-        }).addTo(map);
-
-        L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-            style: style,
-            onEachFeature: onEachFeature,
-        }).addTo(map);
-
-        L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
-            style: {
-                fillColor: 'yellow',
-                color: 'yellow',
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.7,
-            },
-            onEachFeature: onEachFeature,
-        }).addTo(map);
-
-        L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 5,
-                    fillColor: 'red',
-                    color: 'red',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                });
-            },
-            onEachFeature: onEachFeature,
-        }).addTo(map);
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
     </script>
 </body>
 </html>
+
