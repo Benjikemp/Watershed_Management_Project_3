@@ -21,37 +21,6 @@
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-        // Function to style the yellow polygon with a darker fill color
-        function styleYellowPolygon(feature) {
-            return {
-                fillColor: 'darkyellow',
-                color: 'yellow',
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.7,
-            };
-        }
-
-        function style(feature) {
-            var velocity = feature.properties.Mean_Darcy_velocity;
-            var color = getColor(velocity);
-            return {
-                fillColor: color,
-                color: color,
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.7,
-            };
-        }
-
-        function getColor(velocity) {
-            // Adjust this range as needed
-            var low = 0;
-            var high = 20;
-            var colorScale = ['#ff0000', '#00ff00']; // Red to Green gradient
-            return L.Util.interpolateColors(colorScale, low, high, velocity);
-        }
-
         function onEachFeature(feature, layer) {
             if (feature.properties) {
                 var popupContent = "<h3>Feature Attributes</h3>";
@@ -82,22 +51,23 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "ToJSO (Proportional Symbology)": L.geoJSON.ajax("ToJSO.geojson", {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, style(feature));
-                },
+            "ToJSO": L.geoJSON.ajax("ToJSO.geojson", {
                 onEachFeature: onEachFeature,
             }),
-            "AverageSubsurf_FeaturesToJSO1 (Proportional Symbology)": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-                style: style,
+            "AverageSubsurf_FeaturesToJSO1": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
                 onEachFeature: onEachFeature,
             }),
-            "AverageSubsurf_FeaturesToJSO2 (Proportional Symbology)": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-                style: style,
+            "AverageSubsurf_FeaturesToJSO2": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
                 onEachFeature: onEachFeature,
             }),
             "Discharge Zones (Yellow)": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
-                style: styleYellowPolygon, // Use the style for the yellow polygon
+                style: {
+                    fillColor: 'yellow',
+                    color: 'yellow',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7,
+                },
                 onEachFeature: onEachFeature,
             }),
             "Watershed4Pour (Red)": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
@@ -119,4 +89,5 @@
     </script>
 </body>
 </html>
+
 
