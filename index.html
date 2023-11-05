@@ -19,7 +19,9 @@
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
     <script>
         var map = L.map('map').setView([0, 0], 10);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
 
         function onEachFeature(feature, layer) {
             if (feature.properties) {
@@ -34,7 +36,9 @@
         }
 
         var baseMaps = {
-            "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+            "OpenStreetMap (HOT)": L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            })
         };
 
         var rechargeLayers = {
@@ -48,12 +52,15 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Darcy Flow Layer One": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+            "AverageSubsurf_FeaturesToJSO1": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
                 onEachFeature: onEachFeature,
             }),
-            "Darcy Flow Layer Two": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+            "AverageSubsurf_FeaturesToJSO2": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
                 onEachFeature: onEachFeature,
             }),
+        };
+
+        var otherLayers = {
             "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
@@ -67,10 +74,7 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-        };
-
-        var otherLayers = {
-            "Discharge Watersheds": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+            "Discharge Zones (Yellow)": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
                 style: {
                     fillColor: 'yellow',
                     color: 'yellow',
@@ -95,8 +99,10 @@
             }),
         };
 
-        L.control.layers(baseMaps, rechargeLayers, { collapsed: false, groupName: "Recharge Layers" }).addTo(map);
-        L.control.layers(baseMaps, otherLayers, { collapsed: false, groupName: "Other Layers" }).addTo(map);
+        L.control.layers(baseMaps, {
+            "Recharge Layers": rechargeLayers,
+            "Other Layers": otherLayers
+        }, { collapsed: false }).addTo(map);
     </script>
 </body>
 </html>
