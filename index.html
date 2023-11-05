@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>The Land Between Recharge Zones</title>
+    <title>Working Watersheds Mapping</title>
     <style>
         #header {
             text-align: center;
@@ -54,7 +54,7 @@
         };
 
         var rechargeLayers = {
-            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+            "Recharge Zones": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
                     fillColor: 'darkred',
                     color: 'black',
@@ -64,16 +64,13 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Darcy Flow Layer One": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+            "AverageSubsurf_FeaturesToJSO1": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
                 onEachFeature: onEachFeature,
             }),
-            "Darcy Flow Layer Two": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+            "AverageSubsurf_FeaturesToJSO2": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
                 onEachFeature: onEachFeature,
             }),
-        };
-
-        var otherLayers = {
-            "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
+            "ToJSO": L.geoJSON.ajax("ToJSO.geojson", {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
                         radius: 5,
@@ -86,10 +83,32 @@
                 },
                 onEachFeature: onEachFeature,
             }),
+            "Discharge_Zone_FeaturesToJSO": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+                style: {
+                    fillColor: 'yellow',
+                    color: 'yellow',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7,
+                },
+                onEachFeature: onEachFeature,
+            }),
+            "Watershed4Pour_FeaturesToJSO": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        radius: 5,
+                        fillColor: 'red',
+                        color: 'red',
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.7,
+                    });
+                },
+                onEachFeature: onEachFeature,
+            }),
         };
 
-        L.control.layers(baseMaps, rechargeLayers, { collapsed: false, groupName: "Recharge Layers" }).addTo(map);
-        L.control.layers(baseMaps, otherLayers, { collapsed: false, groupName: "Other Layers" }).addTo(map);
+        L.control.layers(baseMaps, rechargeLayers, { collapsed: false }).addTo(map);
     </script>
 </body>
 </html>
