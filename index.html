@@ -17,6 +17,7 @@
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
+    <script src="https://unpkg.com/leaflet-groupedlayercontrol@0.7.1/leaflet.groupedlayercontrol.js"></script>
     <script>
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -37,67 +38,66 @@
             "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         };
 
-        // Create a group layer for Recharge Layers
-        var rechargeLayers = L.layerGroup([
-            L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
-                style: {
-                    fillColor: 'darkred',  // Changed to dark red fill
-                    color: 'black',       // Added black outline
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                },
-                onEachFeature: onEachFeature,
-            }),
-            L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-                onEachFeature: onEachFeature,
-            }),
-            L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-                onEachFeature: onEachFeature,
-            }),
-        ]);
-
-        var overlayMaps = {
-            "Recharge Layers": rechargeLayers,  // Group layer for Recharge Layers
-            "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, {
-                        radius: 5,
-                        fillColor: 'black',  // Changed to black dots
+        var groupedOverlays = {
+            "Recharge Layers": {
+                "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+                    style: {
+                        fillColor: 'darkred',
                         color: 'black',
                         weight: 1,
                         opacity: 1,
                         fillOpacity: 0.7,
-                    });
-                },
-                onEachFeature: onEachFeature,
-            }),
-            "Discharge Zones (Yellow)": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
-                style: {
-                    fillColor: 'yellow',
-                    color: 'yellow',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                },
-                onEachFeature: onEachFeature,
-            }),
-            "Watershed4Pour (Red)": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, {
-                        radius: 5,
-                        fillColor: 'red',
-                        color: 'red',
+                    },
+                    onEachFeature: onEachFeature,
+                }),
+                "AverageSubsurf_FeaturesToJSO1": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+                    onEachFeature: onEachFeature,
+                }),
+                "AverageSubsurf_FeaturesToJSO2": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+                    onEachFeature: onEachFeature,
+                }),
+            },
+            "Other Layers": {
+                "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
+                    pointToLayer: function (feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            radius: 5,
+                            fillColor: 'black',
+                            color: 'black',
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.7,
+                        });
+                    },
+                    onEachFeature: onEachFeature,
+                }),
+                "Discharge Zones (Yellow)": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+                    style: {
+                        fillColor: 'yellow',
+                        color: 'yellow',
                         weight: 1,
                         opacity: 1,
                         fillOpacity: 0.7,
-                    });
-                },
-                onEachFeature: onEachFeature,
-            }),
+                    },
+                    onEachFeature: onEachFeature,
+                }),
+                "Watershed4Pour (Red)": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
+                    pointToLayer: function (feature, latlng) {
+                        return L.circleMarker(latlng, {
+                            radius: 5,
+                            fillColor: 'red',
+                            color: 'red',
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.7,
+                        });
+                    },
+                    onEachFeature: onEachFeature,
+                }),
+            }
         };
 
-        L.control.layers(baseMaps, overlayMaps).addTo(map);
+        L.control.groupedLayers(baseMaps, groupedOverlays).addTo(map);
     </script>
 </body>
 </html>
