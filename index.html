@@ -37,8 +37,9 @@
             "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         };
 
-        var overlayMaps = {
-            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+        // Create a group layer for Recharge Layers
+        var rechargeLayers = L.layerGroup([
+            L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
                     fillColor: 'darkred',  // Changed to dark red fill
                     color: 'black',       // Added black outline
@@ -48,6 +49,16 @@
                 },
                 onEachFeature: onEachFeature,
             }),
+            L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+                onEachFeature: onEachFeature,
+            }),
+            L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+                onEachFeature: onEachFeature,
+            }),
+        ]);
+
+        var overlayMaps = {
+            "Recharge Layers": rechargeLayers,  // Group layer for Recharge Layers
             "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
@@ -59,12 +70,6 @@
                         fillOpacity: 0.7,
                     });
                 },
-                onEachFeature: onEachFeature,
-            }),
-            "AverageSubsurf_FeaturesToJSO1": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-                onEachFeature: onEachFeature,
-            }),
-            "AverageSubsurf_FeaturesToJSO2": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
                 onEachFeature: onEachFeature,
             }),
             "Discharge Zones (Yellow)": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
@@ -96,5 +101,3 @@
     </script>
 </body>
 </html>
-
-
