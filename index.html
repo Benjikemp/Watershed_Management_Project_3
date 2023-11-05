@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Working Watersheds Mapping</title>
+    <title>The Land Between Recharge Zones</title>
     <style>
-        #header {
-            text-align: center;
-            background-color: #fff; /* Set background color for header */
-            padding: 20px; /* Add padding for spacing */
-        }
-        #logo {
-            width: 100px; /* Adjust the width as needed */
-        }
-        #title {
-            font-size: 24px;
-            margin-top: 10px; /* Add margin for spacing */
-        }
         #map {
             height: 400px;
             margin: 0 auto; /* Center the map horizontally */
@@ -25,10 +13,6 @@
     </style>
 </head>
 <body>
-    <div id="header">
-        <img id="logo" src="Logo_TLB_2.png" alt="Working Watershed Project Logo">
-        <div id="title">Working Watersheds Mapping</div>
-    </div>
     <div id="map"></div>
     <script src="leaflet/leaflet.js"></script>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
@@ -54,7 +38,7 @@
         };
 
         var rechargeLayers = {
-            "Recharge Zones": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
                     fillColor: 'darkred',
                     color: 'black',
@@ -64,13 +48,13 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "AverageSubsurf_FeaturesToJSO1": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+            "Darcy Flow Layer One": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
                 onEachFeature: onEachFeature,
             }),
-            "AverageSubsurf_FeaturesToJSO2": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+            "Darcy Flow Layer Two": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
                 onEachFeature: onEachFeature,
             }),
-            "ToJSO": L.geoJSON.ajax("ToJSO.geojson", {
+            "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
                         radius: 5,
@@ -83,7 +67,10 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Discharge_Zone_FeaturesToJSO": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+        };
+
+        var otherLayers = {
+            "Discharge Watersheds": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
                 style: {
                     fillColor: 'yellow',
                     color: 'yellow',
@@ -93,7 +80,7 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Watershed4Pour_FeaturesToJSO": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
+            "Discharge Pour Points": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
                         radius: 5,
@@ -108,10 +95,12 @@
             }),
         };
 
-        L.control.layers(baseMaps, rechargeLayers, { collapsed: false }).addTo(map);
+        L.control.layers(baseMaps, rechargeLayers, { collapsed: false, groupName: "Recharge Layers" }).addTo(map);
+        L.control.layers(baseMaps, otherLayers, { collapsed: false, groupName: "Other Layers" }).addTo(map);
     </script>
 </body>
 </html>
+
 
 
 
