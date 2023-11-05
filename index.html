@@ -48,15 +48,12 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "AverageSubsurf_FeaturesToJSO1": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+            "Darcy Flow Layer One": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
                 onEachFeature: onEachFeature,
             }),
-            "AverageSubsurf_FeaturesToJSO2": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+            "Darcy Flow Layer Two": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
                 onEachFeature: onEachFeature,
             }),
-        };
-
-        var otherLayers = {
             "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
@@ -70,7 +67,10 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Discharge Zones (Yellow)": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+        };
+
+        var otherLayers = {
+            "Discharge Watersheds": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
                 style: {
                     fillColor: 'yellow',
                     color: 'yellow',
@@ -80,7 +80,7 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Watershed4Pour (Red)": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
+            "Discharge Pour Points": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
                 pointToLayer: function (feature, latlng) {
                     return L.circleMarker(latlng, {
                         radius: 5,
@@ -100,5 +100,6 @@
     </script>
 </body>
 </html>
+
 
 
