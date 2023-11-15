@@ -24,6 +24,7 @@
         }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css" />
 </head>
 <body>
     <div id="header">
@@ -34,6 +35,7 @@
     <script src="leaflet/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chroma-js@2.1.0"></script>
+    <script src="https://unpkg.com/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js"></script>
     <script>
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -137,15 +139,15 @@
             onEachFeature: onEachFeature,
         }).addTo(dischargeGroup);
 
-        L.control.layers(baseMaps, {
+        var overlayMaps = {
             "Recharge": rechargeGroup,
             "Discharge": dischargeGroup,
-        }, { collapsed: false }).addTo(map);
+        };
+
+        L.control.groupedLayers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
     </script>
 </body>
 </html>
-
-
 
 
 
