@@ -4,25 +4,27 @@
     <title>The Land Between Recharge Zones</title>
     <style>
         #header {
-            background-color: #ffffff; /* Background color for the header */
+            background-color: #ffffff;
             text-align: center;
-            padding: 20px; /* Adjust the padding for spacing */
+            padding: 20px;
         }
         #logo {
-            width: 150px; /* Adjust the logo width */
+            width: 150px;
         }
         #title {
             font-size: 24px;
-            margin-top: 10px; /* Adjust the margin for spacing */
+            margin-top: 10px;
         }
         #map {
             height: 400px;
-            margin: 0 auto; /* Center the map horizontally */
+            margin: 0 auto;
         }
         body {
-            text-align: center; /* Center align the title */
+            text-align: center;
         }
     </style>
+    <!-- Include Chroma.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
 </head>
 <body>
     <div id="header">
@@ -31,7 +33,6 @@
     </div>
     <div id="map"></div>
     <script src="leaflet/leaflet.js"></script>
-    <link rel="stylesheet" href="leaflet/leaflet.css" />
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
     <script>
         var map = L.map('map').setView([0, 0], 10);
@@ -49,74 +50,45 @@
             }
         }
 
-        var baseMaps = {
-            "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-        };
-
         var rechargeLayers = {
-            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
-                style: {
-                    fillColor: 'transparent', // No fill color
-                    color: 'red', // Thick red outline
-                    weight: 3, // Increased thickness
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                },
-                onEachFeature: onEachFeature,
-            }),
             "Darcy Flow Layer One": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-                onEachFeature: onEachFeature,
-            }),
-            "Darcy Flow Layer Two": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-                onEachFeature: onEachFeature,
-            }),
-            "Head-Water Pour Points": L.geoJSON.ajax("ToJSO.geojson", {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, {
-                        radius: 5,
-                        fillColor: 'black',
+                style: function (feature) {
+                    var velocity = feature.properties.MEAN_Darcy_velocity;
+                    return {
+                        fillColor: getColor(velocity),
                         color: 'black',
                         weight: 1,
                         opacity: 1,
                         fillOpacity: 0.7,
-                    });
+                    };
                 },
                 onEachFeature: onEachFeature,
             }),
-        };
 
-        var otherLayers = {
-            "Discharge Watersheds": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
-                style: {
-                    fillColor: 'yellow',
-                    color: 'yellow',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                },
-                onEachFeature: onEachFeature,
-            }),
-            "Discharge Pour Points": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, {
-                        radius: 5,
-                        fillColor: 'red',
-                        color: 'red',
+            "Darcy Flow Layer Two": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+                style: function (feature) {
+                    var velocity = feature.properties.MEAN_Darcy_velocity;
+                    return {
+                        fillColor: getColor(velocity),
+                        color: 'black',
                         weight: 1,
                         opacity: 1,
                         fillOpacity: 0.7,
-                    });
+                    };
                 },
                 onEachFeature: onEachFeature,
             }),
         };
 
-        L.control.layers(baseMaps, rechargeLayers, { collapsed: false, groupName: "Recharge Layers" }).addTo(map);
-        L.control.layers(baseMaps, otherLayers, { collapsed: false, groupName: "Other Layers" }).addTo(map);
+        function getColor(velocity) {
+            var scale = chroma.scale(['lightblue', 'darkblue']).domain([0, 10]);
+            return scale(velocity).hex();
+        }
+
+        L.control.layers(null, rechargeLayers, { collapsed: false, groupName: "Darcy Flow Layers" }).addTo(map);
     </script>
 </body>
 </html>
-
 
 
 
