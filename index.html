@@ -56,9 +56,9 @@
         var rechargeLayers = {
             "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
-                    fillColor: 'darkred',
-                    color: 'black',
-                    weight: 1,
+                    fillColor: 'transparent', // No fill color
+                    color: 'red', // Thick red outline
+                    weight: 3, // Increased thickness
                     opacity: 1,
                     fillOpacity: 0.7,
                 },
