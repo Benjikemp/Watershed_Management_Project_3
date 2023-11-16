@@ -58,32 +58,43 @@
             "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         };
 
+        var darcyFlowLayerOne = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
+            style: function (feature) {
+                return {
+                    fillColor: getColor(feature.properties.MEAN_Darcy_velocity),
+                    color: 'black',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7,
+                };
+            },
+            onEachFeature: onEachFeature,
+        });
+
+        var darcyFlowLayerTwo = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
+            style: function (feature) {
+                return {
+                    fillColor: getColor(feature.properties.MEAN_Darcy_velocity),
+                    color: 'black',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7,
+                };
+            },
+            onEachFeature: onEachFeature,
+        });
+
         var darcyFlowLayers = {
-            "Darcy Flow Layer One": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
-                style: function (feature) {
-                    return {
-                        fillColor: getColor(feature.properties.MEAN_Darcy_velocity),
-                        color: 'black',
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.7,
-                    };
-                },
-                onEachFeature: onEachFeature,
-            }),
-            "Darcy Flow Layer Two": L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
-                style: function (feature) {
-                    return {
-                        fillColor: getColor(feature.properties.MEAN_Darcy_velocity),
-                        color: 'black',
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.7,
-                    };
-                },
-                onEachFeature: onEachFeature,
-            })
+            "Darcy Flow Layer": L.layerGroup([darcyFlowLayerOne, darcyFlowLayerTwo])
         };
+
+        var rechargeLayer = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+            style: {
+                color: 'red',
+                weight: 2,
+            },
+            onEachFeature: onEachFeature,
+        }).addTo(map);
 
         var headWaterPourPoints = L.geoJSON.ajax("ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
@@ -97,7 +108,7 @@
                 });
             },
             onEachFeature: onEachFeature,
-        });
+        }).addTo(map);
 
         var dischargeWatersheds = L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
             style: {
@@ -108,7 +119,7 @@
                 fillOpacity: 0.7,
             },
             onEachFeature: onEachFeature,
-        });
+        }).addTo(map);
 
         var dischargePourPoints = L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
@@ -122,9 +133,10 @@
                 });
             },
             onEachFeature: onEachFeature,
-        });
+        }).addTo(map);
 
         L.control.layers(baseMaps, {
+            "Recharge Layer": rechargeLayer,
             "Darcy Flow Layers": darcyFlowLayers,
             "Head-Water Pour Points": headWaterPourPoints,
             "Discharge Watersheds": dischargeWatersheds,
