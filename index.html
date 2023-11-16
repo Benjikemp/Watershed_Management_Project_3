@@ -70,7 +70,7 @@
                 };
             },
             onEachFeature: onEachFeature,
-        });
+        }).addTo(map);
 
         var darcyFlowLayerTwo = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
             style: function (feature) {
@@ -83,10 +83,7 @@
                 };
             },
             onEachFeature: onEachFeature,
-        });
-
-        // Create a layer group for Darcy Flow layers
-        var darcyFlowLayers = L.layerGroup([darcyFlowLayerOne, darcyFlowLayerTwo]);
+        }).addTo(map);
 
         var headWaterPourPoints = L.geoJSON.ajax("ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
@@ -100,7 +97,18 @@
                 });
             },
             onEachFeature: onEachFeature,
-        });
+        }).addTo(map);
+
+        // Manually create a control with checkboxes for each layer
+        var layerControl = L.control({ position: 'topright' });
+        layerControl.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML +=
+                '<input type="checkbox" id="darcyFlowLayerOne" checked> Darcy Flow Layer One<br>' +
+                '<input type="checkbox" id="darcyFlowLayerTwo" checked> Darcy Flow Layer Two<br>';
+            return div;
+        };
+        layerControl.addTo(map);
 
         // Add layers to the map
         L.control.layers(baseMaps, {
@@ -111,7 +119,6 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Darcy Flow Layers": darcyFlowLayers,
             "Head-Water Pour Points": headWaterPourPoints,
             "Discharge Watersheds": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
                 style: {
@@ -140,4 +147,3 @@
     </script>
 </body>
 </html>
-
