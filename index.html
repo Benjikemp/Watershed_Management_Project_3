@@ -22,6 +22,16 @@
         body {
             text-align: center; /* Center align the title */
         }
+        /* Added style for red outline and no fill */
+        .leaflet-control-layers-group label {
+            padding-left: 30px;
+        }
+        .leaflet-control-layers-group .leaflet-control-layers-base label {
+            padding-left: 40px;
+        }
+        .leaflet-control-layers-group .leaflet-control-layers-overlays label {
+            padding-left: 50px;
+        }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
 </head>
@@ -45,10 +55,9 @@
         function onEachFeature(feature, layer) {
             if (feature.properties) {
                 var popupContent = "<h3>Feature Attributes</h3>";
-                for (var property in feature.properties) {
-                    if (feature.properties.hasOwnProperty(property)) {
-                        popupContent += "<strong>" + property + ":</strong> " + feature.properties[property] + "<br>";
-                    }
+                if (layer.feature.properties.MEAN_Darcy_velocity !== undefined) {
+                    // Display only MEAN_Darcy_velocity attribute in the popup
+                    popupContent += "<strong>MEAN_Darcy_velocity:</strong> " + layer.feature.properties.MEAN_Darcy_velocity + "<br>";
                 }
                 layer.bindPopup(popupContent);
             }
@@ -132,6 +141,7 @@
                 style: {
                     color: 'red',
                     weight: 2,
+                    fill: false, // No fill
                 },
                 onEachFeature: onEachFeature,
             }),
