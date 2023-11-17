@@ -55,9 +55,10 @@
         function onEachFeature(feature, layer) {
             if (feature.properties) {
                 var popupContent = "<h3>Feature Attributes</h3>";
-                // Change 'MEAN_Darcy_velocity' to 'Mean Subsurface Flow (m/s)'
-                if (layer.feature.properties['Mean Subsurface Flow (m/s)'] !== undefined) {
-                    popupContent += "<strong>Mean Subsurface Flow (m/s):</strong> " + layer.feature.properties['Mean Subsurface Flow (m/s)'] + "<br>";
+                for (var property in feature.properties) {
+                    if (feature.properties.hasOwnProperty(property)) {
+                        popupContent += "<strong>" + property + ":</strong> " + feature.properties[property] + "<br>";
+                    }
                 }
                 layer.bindPopup(popupContent);
             }
