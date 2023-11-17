@@ -70,7 +70,7 @@
                 };
             },
             onEachFeature: onEachFeature,
-        }).addTo(map);
+        });
 
         var darcyFlowLayerTwo = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
             style: function (feature) {
@@ -83,7 +83,10 @@
                 };
             },
             onEachFeature: onEachFeature,
-        }).addTo(map);
+        });
+
+        // Combine Darcy Flow layers into a single layer group
+        var darcyFlowLayersGroup = L.layerGroup([darcyFlowLayerOne, darcyFlowLayerTwo]);
 
         var headWaterPourPoints = L.geoJSON.ajax("ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
@@ -97,52 +100,45 @@
                 });
             },
             onEachFeature: onEachFeature,
-        }).addTo(map);
+        });
 
-        // Manually create a control with checkboxes for each layer
-        var layerControl = L.control({ position: 'topright' });
-        layerControl.onAdd = function (map) {
-            var div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML +=
-                '<input type="checkbox" id="darcyFlowLayerOne" checked> Darcy Flow Layer One<br>' +
-                '<input type="checkbox" id="darcyFlowLayerTwo" checked> Darcy Flow Layer Two<br>';
-            return div;
-        };
-        layerControl.addTo(map);
+        var dischargeWatersheds = L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
+            style: {
+                fillColor: 'yellow',
+                color: 'yellow',
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.7,
+            },
+            onEachFeature: onEachFeature,
+        });
 
-        // Add layers to the map
+        var dischargePourPoints = L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 5,
+                    fillColor: 'red',
+                    color: 'red',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.7,
+                });
+            },
+            onEachFeature: onEachFeature,
+        });
+
         L.control.layers(baseMaps, {
-            "Recharge Layer": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
                     color: 'red',
                     weight: 2,
                 },
                 onEachFeature: onEachFeature,
             }),
+            "Darcy Flow Layers": darcyFlowLayersGroup,
             "Head-Water Pour Points": headWaterPourPoints,
-            "Discharge Watersheds": L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
-                style: {
-                    fillColor: 'yellow',
-                    color: 'yellow',
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.7,
-                },
-                onEachFeature: onEachFeature,
-            }),
-            "Discharge Pour Points": L.geoJSON.ajax("Watershed4Pour_FeaturesToJSO.geojson", {
-                pointToLayer: function (feature, latlng) {
-                    return L.circleMarker(latlng, {
-                        radius: 5,
-                        fillColor: 'red',
-                        color: 'red',
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.7,
-                    });
-                },
-                onEachFeature: onEachFeature,
-            }),
+            "Discharge Watersheds": dischargeWatersheds,
+            "Discharge Pour Points": dischargePourPoints,
         }, { collapsed: false, groupName: "Layers" }).addTo(map);
     </script>
 </body>
