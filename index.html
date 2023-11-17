@@ -55,9 +55,9 @@
         function onEachFeature(feature, layer) {
             if (feature.properties) {
                 var popupContent = "<h3>Feature Attributes</h3>";
-                if (layer.feature.properties.MEAN_Darcy_velocity !== undefined) {
-                    // Display only MEAN_Darcy_velocity attribute in the popup
-                    popupContent += "<strong>MEAN_Darcy_velocity:</strong> " + layer.feature.properties.MEAN_Darcy_velocity + "<br>";
+                // Change 'MEAN_Darcy_velocity' to 'Mean Subsurface Flow (m/s)'
+                if (layer.feature.properties['Mean Subsurface Flow (m/s)'] !== undefined) {
+                    popupContent += "<strong>Mean Subsurface Flow (m/s):</strong> " + layer.feature.properties['Mean Subsurface Flow (m/s)'] + "<br>";
                 }
                 layer.bindPopup(popupContent);
             }
@@ -71,7 +71,7 @@
         var darcyFlowLayerOne = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
             style: function (feature) {
                 return {
-                    fillColor: getColor(feature.properties.MEAN_Darcy_velocity),
+                    fillColor: getColor(feature.properties['Mean Subsurface Flow (m/s)']),
                     color: 'black',
                     weight: 1,
                     opacity: 1,
@@ -84,7 +84,7 @@
         var darcyFlowLayerTwo = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
             style: function (feature) {
                 return {
-                    fillColor: getColor(feature.properties.MEAN_Darcy_velocity),
+                    fillColor: getColor(feature.properties['Mean Subsurface Flow (m/s)']),
                     color: 'black',
                     weight: 1,
                     opacity: 1,
