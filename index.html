@@ -22,6 +22,16 @@
         body {
             text-align: center; /* Center align the title */
         }
+        /* Added style for red outline and no fill */
+        .leaflet-control-layers-group label {
+            padding-left: 30px;
+        }
+        .leaflet-control-layers-group .leaflet-control-layers-base label {
+            padding-left: 40px;
+        }
+        .leaflet-control-layers-group .leaflet-control-layers-overlays label {
+            padding-left: 50px;
+        }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
 </head>
@@ -58,7 +68,15 @@
             "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         };
 
-        // Load GeoJSON data for Darcy Flow layers
+        var rechargeLayer = L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+            style: {
+                color: 'red',
+                weight: 2,
+                fill: false, // No fill
+            },
+            onEachFeature: onEachFeature,
+        });
+
         var darcyFlowLayerOne = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
             style: function (feature) {
                 return {
@@ -84,9 +102,6 @@
             },
             onEachFeature: onEachFeature,
         });
-
-        // Combine Darcy Flow layers into a single layer group
-        var darcyFlowLayersGroup = L.layerGroup([darcyFlowLayerOne, darcyFlowLayerTwo]);
 
         var headWaterPourPoints = L.geoJSON.ajax("ToJSO.geojson", {
             pointToLayer: function (feature, latlng) {
@@ -128,14 +143,9 @@
         });
 
         L.control.layers(baseMaps, {
-            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
-                style: {
-                    color: 'red',
-                    weight: 2,
-                },
-                onEachFeature: onEachFeature,
-            }),
-            "Darcy Flow Layers": darcyFlowLayersGroup,
+            "Head-Water Watersheds": rechargeLayer,
+            "Darcy Flow Layer One": darcyFlowLayerOne,
+            "Darcy Flow Layer Two": darcyFlowLayerTwo,
             "Head-Water Pour Points": headWaterPourPoints,
             "Discharge Watersheds": dischargeWatersheds,
             "Discharge Pour Points": dischargePourPoints,
@@ -143,3 +153,4 @@
     </script>
 </body>
 </html>
+
