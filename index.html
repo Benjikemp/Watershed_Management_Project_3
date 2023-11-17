@@ -22,16 +22,6 @@
         body {
             text-align: center; /* Center align the title */
         }
-        /* Added style for red outline and no fill */
-        .leaflet-control-layers-group label {
-            padding-left: 30px;
-        }
-        .leaflet-control-layers-group .leaflet-control-layers-base label {
-            padding-left: 40px;
-        }
-        .leaflet-control-layers-group .leaflet-control-layers-overlays label {
-            padding-left: 50px;
-        }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
 </head>
@@ -142,7 +132,6 @@
                 style: {
                     color: 'red',
                     weight: 2,
-                    fill: false, // No fill
                 },
                 onEachFeature: onEachFeature,
             }),
