@@ -22,12 +22,32 @@
         .leaflet-control-layers-selector {
             margin-right: 5px; /* Adjust the margin as needed */
         }
+
+        .legend {
+            background-color: white;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .legend-item {
+            margin-bottom: 5px;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
 </head>
 
 <body>
     <div id="map"></div>
+    <div id="legend" class="leaflet-control-layers legend"></div>
+
     <script src="leaflet/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chroma-js@2.1.0"></script>
@@ -124,6 +144,24 @@
             onEachFeature: onEachFeature,
         });
 
+        // Add legend to the map
+        var legend = L.control({ position: 'topright' });
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML += '<h4>Legend</h4>';
+
+            var colors = chroma.scale(['lightblue', 'darkblue']).mode('lab').colors(5);
+
+            for (var i = 0; i < colors.length; i++) {
+                div.innerHTML +=
+                    '<div class="legend-item"><div class="legend-color" style="background:' + colors[i] + '"></div>' +
+                    '<span>' + i + '</span></div>';
+            }
+
+            return div;
+        };
+        legend.addTo(map);
+
         L.control.layers(baseMaps, {
             "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
@@ -141,6 +179,7 @@
 </body>
 
 </html>
+
 
 
 
