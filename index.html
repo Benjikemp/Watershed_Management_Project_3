@@ -86,7 +86,9 @@
                     fillOpacity: 0.7,
                 };
             },
-            onEachFeature: onEachFeature,
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("<h3>Velocity (m/s)</h3>" + feature.properties.MEAN_Darcy_velocity);
+            },
         });
 
         var darcyFlowLayerTwo = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO2.geojson", {
@@ -99,7 +101,9 @@
                     fillOpacity: 0.7,
                 };
             },
-            onEachFeature: onEachFeature,
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup("<h3>Velocity (m/s)</h3>" + feature.properties.MEAN_Darcy_velocity);
+            },
         });
 
         // Combine Darcy Flow layers into a single layer group
@@ -151,11 +155,12 @@
             div.innerHTML += '<h4>Legend</h4>';
 
             var colors = chroma.scale(['lightblue', 'darkblue']).mode('lab').colors(5);
+            var values = [/* Add your actual Darcy flow values here */];
 
             for (var i = 0; i < colors.length; i++) {
                 div.innerHTML +=
                     '<div class="legend-item"><div class="legend-color" style="background:' + colors[i] + '"></div>' +
-                    '<span>' + i + '</span></div>';
+                    '<span>' + values[i] + '</span></div>';
             }
 
             return div;
