@@ -76,12 +76,8 @@
 
         function onEachFeature(feature, layer) {
             if (feature.properties) {
-                var popupContent = "<h3>Feature Attributes</h3>";
-                for (var property in feature.properties) {
-                    if (feature.properties.hasOwnProperty(property)) {
-                        popupContent += "<strong>" + property + ":</strong> " + feature.properties[property] + "<br>";
-                    }
-                }
+                var popupContent = "<h3>Feature Attributes</h3>" +
+                    "<strong>Velocity (m/s):</strong> " + feature.properties.MEAN_Darcy_velocity + "<br>";
                 layer.bindPopup(popupContent);
             }
         }
@@ -195,6 +191,7 @@
 </body>
 
 </html>
+
 
 
 
