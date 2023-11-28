@@ -1,39 +1,29 @@
+<html>
 <head>
     <title>The Land Between Recharge Zones</title>
     <style>
         #header {
-            background-color: #ffffff;
-            /* Background color for the header */
+            background-color: #ffffff; /* Background color for the header */
             text-align: center;
-            padding: 20px;
-            /* Adjust the padding for spacing */
+            padding: 20px; /* Adjust the padding for spacing */
         }
-
         #logo {
-            width: 150px;
-            /* Adjust the logo width */
+            width: 150px; /* Adjust the logo width */
         }
-
         #title {
             font-size: 24px;
-            margin-top: 10px;
-            /* Adjust the margin for spacing */
+            margin-top: 10px; /* Adjust the margin for spacing */
         }
-
         #map {
             height: 400px;
-            margin: 0 auto;
-            /* Center the map horizontally */
+            margin: 0 auto; /* Center the map horizontally */
         }
-
         body {
-            text-align: center;
-            /* Center align the title */
+            text-align: center; /* Center align the title */
         }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
 </head>
-
 <body>
     <div id="header">
         <img id="logo" src="Logo_TLB_2.png" alt="Working Watershed Project Logo">
@@ -136,57 +126,20 @@
             onEachFeature: onEachFeature,
         });
 
-        // Create custom layer control
-        var layerControl = L.control({ position: 'topright' });
-
-        layerControl.onAdd = function (map) {
-            var div = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
-
-            // Base Maps
-            div.appendChild(createGroup('Base Maps', baseMaps));
-
-            // Overlay Maps
-            div.appendChild(createGroup('Overlay Maps', {
-                "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
-                    style: {
-                        color: 'red',
-                        weight: 2,
-                    },
-                    onEachFeature: onEachFeature,
-                }),
-                "Darcy Flow Layers": darcyFlowLayersGroup,
-                "Head-Water Pour Points": headWaterPourPoints,
-                "Discharge Pour Points": dischargePourPoints,
-                "Discharge Watersheds": dischargeWatersheds,
-            }));
-
-            return div;
-        };
-
-        // Add the custom layer control to the map
-        layerControl.addTo(map);
-
-        // Helper function to create a layer group with proper styling
-        function createGroup(groupName, layers) {
-            var groupContainer = L.DomUtil.create('div', 'leaflet-control-layers-group');
-            var groupHeading = document.createElement('label');
-            groupHeading.innerHTML = groupName;
-            groupContainer.appendChild(groupHeading);
-
-            for (var layerName in layers) {
-                if (layers.hasOwnProperty(layerName)) {
-                    var layerInput = document.createElement('div');
-                    layerInput.innerHTML = '<label class="leaflet-control-layers-label">' +
-                        '<input class="leaflet-control-layers-selector" type="checkbox">' +
-                        layerName +
-                        '</label>';
-                    groupContainer.appendChild(layerInput);
-                }
-            }
-
-            return groupContainer;
-        }
+        L.control.layers(baseMaps, {
+            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+                style: {
+                    color: 'red',
+                    weight: 2,
+                },
+                onEachFeature: onEachFeature,
+            }),
+            "Darcy Flow Layers": darcyFlowLayersGroup,
+            "Head-Water Pour Points": headWaterPourPoints,
+            "Discharge Watersheds": dischargeWatersheds,
+            "Discharge Pour Points": dischargePourPoints,
+        }, { collapsed: false, groupName: "Layers" }).addTo(map);
     </script>
 </body>
-
 </html>
+
