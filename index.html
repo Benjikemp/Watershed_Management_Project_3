@@ -123,7 +123,7 @@
             var div = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
 
             // Overlay Maps
-            div.appendChild(createGroup('Overlay Maps', {
+            div.appendChild(createGroup({
                 "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                     style: {
                         color: 'red',
@@ -144,11 +144,8 @@
         layerControl.addTo(map);
 
         // Helper function to create a layer group with proper styling
-        function createGroup(groupName, layers) {
+        function createGroup(layers) {
             var groupContainer = L.DomUtil.create('div', 'leaflet-control-layers-group');
-            var groupHeading = document.createElement('label');
-            groupHeading.innerHTML = groupName;
-            groupContainer.appendChild(groupHeading);
 
             for (var layerName in layers) {
                 if (layers.hasOwnProperty(layerName)) {
