@@ -4,25 +4,6 @@
 <head>
     <title>The Land Between Recharge Zones</title>
     <style>
-        #header {
-            background-color: #ffffff;
-            /* Background color for the header */
-            text-align: center;
-            padding: 20px;
-            /* Adjust the padding for spacing */
-        }
-
-        #logo {
-            width: 150px;
-            /* Adjust the logo width */
-        }
-
-        #title {
-            font-size: 24px;
-            margin-top: 10px;
-            /* Adjust the margin for spacing */
-        }
-
         #map {
             height: 400px;
             margin: 0 auto;
@@ -38,10 +19,6 @@
 </head>
 
 <body>
-    <div id="header">
-        <img id="logo" src="Logo_TLB_2.png" alt="Working Watershed Project Logo">
-        <h1 id="title">Working Watersheds Mapping</h1>
-    </div>
     <div id="map"></div>
     <script src="leaflet/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
@@ -145,9 +122,6 @@
         layerControl.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
 
-            // Base Maps
-            div.appendChild(createGroup('Base Maps', baseMaps));
-
             // Overlay Maps
             div.appendChild(createGroup('Overlay Maps', {
                 "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
@@ -193,5 +167,3 @@
 </body>
 
 </html>
-
-
