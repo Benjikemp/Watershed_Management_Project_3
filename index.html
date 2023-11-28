@@ -139,12 +139,7 @@
             onEachFeature: onEachFeature,
         });
 
-        L.control.layers(baseMaps, null, {
-            collapsed: false,
-            groupName: "Layers"
-        }).addTo(map);
-
-        L.control.layers(null, {
+        L.control.layers(baseMaps, {
             "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
                     color: 'red',
@@ -154,8 +149,8 @@
             }),
             "Darcy Flow Layers": darcyFlowLayersGroup,
             "Head-Water Pour Points": headWaterPourPoints,
-            "Discharge Watersheds": dischargeWatersheds,
             "Discharge Pour Points": dischargePourPoints,
+            "Discharge Watersheds": dischargeWatersheds,
         }, {
             collapsed: false,
             groupName: "Layers"
@@ -164,4 +159,5 @@
 </body>
 
 </html>
+
 
