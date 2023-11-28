@@ -139,22 +139,56 @@
             onEachFeature: onEachFeature,
         });
 
-        L.control.layers(baseMaps, {
-            "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
-                style: {
-                    color: 'red',
-                    weight: 2,
-                },
-                onEachFeature: onEachFeature,
-            }),
-            "Darcy Flow Layers": darcyFlowLayersGroup,
-            "Head-Water Pour Points": headWaterPourPoints,
-            "Discharge Pour Points": dischargePourPoints,
-            "Discharge Watersheds": dischargeWatersheds,
-        }, {
-            collapsed: false,
-            groupName: "Layers"
-        }).addTo(map);
+        // Create custom layer control
+        var layerControl = L.control({ position: 'topright' });
+
+        layerControl.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'leaflet-control-layers leaflet-control-layers-expanded');
+
+            // Base Maps
+            div.appendChild(createGroup('Base Maps', baseMaps));
+
+            // Overlay Maps
+            div.appendChild(createGroup('Overlay Maps', {
+                "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
+                    style: {
+                        color: 'red',
+                        weight: 2,
+                    },
+                    onEachFeature: onEachFeature,
+                }),
+                "Darcy Flow Layers": darcyFlowLayersGroup,
+                "Head-Water Pour Points": headWaterPourPoints,
+                "Discharge Pour Points": dischargePourPoints,
+                "Discharge Watersheds": dischargeWatersheds,
+            }));
+
+            return div;
+        };
+
+        // Add the custom layer control to the map
+        layerControl.addTo(map);
+
+        // Helper function to create a layer group with proper styling
+        function createGroup(groupName, layers) {
+            var groupContainer = L.DomUtil.create('div', 'leaflet-control-layers-group');
+            var groupHeading = document.createElement('label');
+            groupHeading.innerHTML = groupName;
+            groupContainer.appendChild(groupHeading);
+
+            for (var layerName in layers) {
+                if (layers.hasOwnProperty(layerName)) {
+                    var layerInput = document.createElement('div');
+                    layerInput.innerHTML = '<label class="leaflet-control-layers-label">' +
+                        '<input class="leaflet-control-layers-selector" type="checkbox">' +
+                        layerName +
+                        '</label>';
+                    groupContainer.appendChild(layerInput);
+                }
+            }
+
+            return groupContainer;
+        }
     </script>
 </body>
 
