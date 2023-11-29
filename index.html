@@ -147,7 +147,7 @@
                 });
             },
             onEachFeature: onEachFeature,
-        }).addTo(map); // Add this layer to the map
+        });
 
         var dischargeWatersheds = L.geoJSON.ajax("Discharge_Zone_FeaturesToJSO.geojson", {
             style: {
@@ -175,7 +175,6 @@
         });
 
         L.control.layers(baseMaps, {
-            "Head-Water Pour Points": headWaterPourPoints, // Change the order in the layer control
             "Head-Water Watersheds": L.geoJSON.ajax("Recharge_Zones_ToJSO.geojson", {
                 style: {
                     color: 'red',
@@ -184,6 +183,7 @@
                 onEachFeature: onEachFeature,
             }),
             "Average Subsurface Flow (m/s)": darcyFlowLayersGroup,
+            "Head-Water Pour Points": headWaterPourPoints,
             "Discharge Watersheds": dischargeWatersheds,
             "Discharge Pour Points": dischargePourPoints,
         }, { collapsed: false, groupName: "Layers" }).addTo(map);
@@ -191,6 +191,7 @@
 </body>
 
 </html>
+
 
 
 
