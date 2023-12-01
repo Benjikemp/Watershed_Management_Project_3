@@ -181,7 +181,6 @@
                 },
                 onEachFeature: onEachFeature,
             }),
-            "Average Subsurface Flow (m/s)": darcyFlowLayersGroup,
             "Head-Water Pour Points": headWaterPourPoints,
             "Discharge Watersheds": dischargeWatersheds,
             "Discharge Pour Points": dischargePourPoints,
@@ -189,11 +188,12 @@
 
         // Add legend control after layer control
         legend.addTo(map);
+        // Move legend container to be a child of layer control container
+        document.getElementsByClassName('leaflet-control-layers-list')[0].appendChild(legend.getContainer());
     </script>
 </body>
 
 </html>
-
 
 
 
