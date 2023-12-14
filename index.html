@@ -69,9 +69,7 @@
         <h1 id="title">Working Watersheds Mapping</h1>
     </div>
     <div id="map"></div>
-    
-    <!-- Metadata Section: Layers Produced -->
-    <div class="metadata-section" id="layersProduced">
+    <div id="metadataText" class="metadata-section">
         <h2>Layers Produced:</h2>
         <ul>
             <li>Headwater/recharge watersheds layer</li>
@@ -81,10 +79,7 @@
             <li>Wetland classification layer</li>
             <li>Darcy flow layer</li>
         </ul>
-    </div>
 
-    <!-- Metadata Section: Data Sources Used -->
-    <div class="metadata-section" id="dataSourcesUsed">
         <h2>Data sources Used:</h2>
         <ul>
             <li>Headwater/recharge pour point layer
@@ -124,10 +119,7 @@
                 </ul>
             </li>
         </ul>
-    </div>
 
-    <!-- Metadata Section: Methods -->
-    <div class="metadata-section" id="methods">
         <h2>Methods:</h2>
         <ul>
             <li>Headwater/recharge pour point layer.
@@ -143,29 +135,15 @@
                 <p>The Darcy flow layers were created using a variety of layers as indicated above. Using a variety of soil survey data soil types were assigned a hydrological conductivity and porosity coefficient using standard values and values assignment by the ministry of agriculture and Agri foods. After this depth to bedrock was estimated throughout the study areas using a PDEM along with depth to bedrock data available through the Canadian Water Quality Network database. This was completed using data interpolation techniques and was one area that created uncertainty in this project. Finally, after appropriately preparing all these datasets for use, the Darcy flow tool was used in order to estimate groundwater subsurface flow rates at saturation throughout all the headwater watersheds that have been delineated. As the output of the Darcy Flow tool is a raster dataset where each cell represents the estimates subsurface flow rate in m/s, the average cell value for each watershed was calculated and displayed to give a better visual representation of the flow rate for each watershed.</p>
             </li>
         </ul>
-    </div>
 
-    <!-- Metadata Section: Intro -->
-    <div class="metadata-section" id="intro">
         <h2>Intro:</h2>
         <p>The working watersheds project is meant to help bridge gaps in watershed knowledge in the context of understanding the risks associated with disturbing or losing the integrity of watersheds throughout Ontario. This project aims to give the public an easy-to-use tool that can tell them where a wetland or water body sits within a watershed and what benefits different wetlands and water bodies may have based on this. Many of the headwater and discharge watersheds throughout the Land Between bioregion. Headwaters play a major role in groundwater recharge to wetlands and pave the way for larger river and lake ecosystems and lower elevations by delivering a consistent source of groundwater and surface flow. Wetlands play an important role in water security in the context of headwaters as they regulate the water delivery from headwaters, protect from flood control, and help to maintain water quality. That’s why we have identified all the wetlands that intersect with headwater watersheds to give the public a better understanding of the wetlands that may be most important for their communities but may be overlooked in provincial or municipal legislation. The same has been done with discharge watersheds to understand what wetlands may be most critical for flood mitigation and water attenuation further along the water cycle.</p>
     </div>
-
-    <!-- Metadata Section: Applications and Benefits -->
-    <div class="metadata-section" id="applicationsAndBenefits">
-        <h2>Applications and Benefits:</h2>
-        <h3>Head Water Watersheds:</h3>
-        <p>The images seen below illustrate both the headwater watersheds surrounding the town of Haliburton as well as all the headwater watersheds that have been identified in TLB boundary. These watersheds are headwater watersheds that are within a ten-kilometer radius of larger a major town within TLB. These watersheds were identified by locating where multiple first-order streams join together creating a higher order stream system and thus define the pour point of a headwater watershed. These watersheds can tell us where the water is coming from that feeds our downstream wetlands, streams rivers and lakes and can help us protect them.</p>
-        <!-- Add images or other content as needed -->
-    </div>
-
-    <!-- Add more metadata sections as needed -->
 
     <script src="leaflet/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chroma-js@2.1.0"></script>
     <script>
-        // Your existing JavaScript code remains unchanged
         var map = L.map('map').setView([0, 0], 10);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
@@ -181,10 +159,8 @@
             }
         }
 
-        // Placeholder Darcy flow values
         var values = [0, 0.05, 0.1, 0.15, 0.2];
 
-        // Create legend
         var legend = L.control({ position: 'bottomright' });
 
         legend.onAdd = function (map) {
@@ -204,7 +180,6 @@
             "Map": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
         };
 
-        // Load GeoJSON data for Darcy Flow layers
         var darcyFlowLayerOne = L.geoJSON.ajax("AverageSubsurf_FeaturesToJSO1.geojson", {
             style: function (feature) {
                 return {
@@ -227,7 +202,7 @@
                     opacity: 1,
                     fillOpacity: 0.7,
                 };
-            },
+	},
             onEachFeature: onEachFeature,
         });
 
