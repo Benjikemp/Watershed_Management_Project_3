@@ -37,7 +37,6 @@
         .metadata-section {
             text-align: left;
             padding: 20px;
-            display: none;
         }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
@@ -265,30 +264,6 @@
             groupName: "Layers",
             metadataText: document.getElementById('metadataText'),
         }).addTo(map);
-
-        // Show metadata text when "Metadata" is selected
-        map.on('overlayadd', function (eventLayer) {
-            if (eventLayer.name === 'Average Subsurface Flow (m/s)') {
-                document.getElementById('metadataText').style.display = 'block';
-            }
-        });
-
-        // Hide metadata text when other layers are selected
-        map.on('overlayremove', function (eventLayer) {
-            if (eventLayer.name === 'Average Subsurface Flow (m/s)') {
-                document.getElementById('metadataText').style.display = 'none';
-            }
-        });
-
-        // Function to toggle visibility of a metadata section
-        function toggleMetadataSection(sectionId) {
-            var section = document.getElementById(sectionId);
-            if (section.style.display === 'none') {
-                section.style.display = 'block';
-            } else {
-                section.style.display = 'none';
-            }
-        }
     </script>
 </body>
 
