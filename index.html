@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html> 
+<html>
 
 <head>
     <title>The Land Between Recharge Zones</title>
@@ -33,6 +33,12 @@
             text-align: center;
             /* Center align the title */
         }
+
+        #metadataText {
+            display: none;
+            text-align: left;
+            padding: 20px;
+        }
     </style>
     <link rel="stylesheet" href="leaflet/leaflet.css" />
     <style>
@@ -63,6 +69,30 @@
         <h1 id="title">Working Watersheds Mapping</h1>
     </div>
     <div id="map"></div>
+    <div id="metadataText">
+        <h2>Layers Produced:</h2>
+        <ul>
+            <li>Headwater/recharge watersheds layer</li>
+            <li>Headwater/recharge watersheds pour point layer</li>
+            <li>Discharge watersheds Layer</li>
+            <li>Discharge watersheds pour point Layer</li>
+            <li>Wetland classification layer</li>
+            <li>Darcy flow layer</li>
+        </ul>
+
+        <h2>Data sources Used:</h2>
+        <!-- Include your data sources here -->
+
+        <h2>Methods:</h2>
+        <!-- Include your methods here -->
+
+        <h2>Intro:</h2>
+        <!-- Include your introduction here -->
+
+        <h2>Applications and Benefits:</h2>
+        <!-- Include your applications and benefits here -->
+    </div>
+
     <script src="leaflet/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chroma-js@2.1.0"></script>
@@ -186,11 +216,30 @@
             "Head-Water Pour Points": headWaterPourPoints,
             "Discharge Watersheds": dischargeWatersheds,
             "Discharge Pour Points": dischargePourPoints,
-        }, { collapsed: false, groupName: "Layers" }).addTo(map);
+        }, {
+            collapsed: false,
+            groupName: "Layers",
+            metadataText: document.getElementById('metadataText'),
+        }).addTo(map);
+
+        // Show metadata text when "Metadata" is selected
+        map.on('overlayadd', function (eventLayer) {
+            if (eventLayer.name === 'Average Subsurface Flow (m/s)') {
+                document.getElementById('metadataText').style.display = 'block';
+            }
+        });
+
+        // Hide metadata text when other layers are selected
+        map.on('overlayremove', function (eventLayer) {
+            if (eventLayer.name === 'Average Subsurface Flow (m/s)') {
+                document.getElementById('metadataText').style.display = 'none';
+            }
+        });
     </script>
 </body>
 
 </html>
+
 
 
 
