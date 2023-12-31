@@ -194,7 +194,7 @@
 
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'info legend');
-            div.innerHTML += '<h4>Average Subsurface Flow Velocity (m/s)</h4>';
+            div.innerHTML += '<h4>Average Subsurface Flow (m/s)</h4>';
             for (var i = 0; i < values.length - 1; i++) {
                 div.innerHTML +=
                     '<i style="background:' + getColor((values[i] + values[i + 1]) / 2) + '"></i> ' +
